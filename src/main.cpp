@@ -182,6 +182,33 @@ public:
         this->innerPoint.topRight.y = this->innerPoint.topRight.y - 1;
     }
 
+    void moveLeftUp(Adafruit_SSD1306& ssd1306) {
+
+        if (!this->isDraw)
+            return;
+
+        this->moveLeft(ssd1306);
+        this->moveUp(ssd1306);
+    }
+
+    void moveLeftDown(Adafruit_SSD1306& ssd1306) {
+
+        if (!this->isDraw)
+            return;
+
+        this->moveLeft(ssd1306);
+        this->moveDown(ssd1306);
+    }
+
+    void moveRightUp(Adafruit_SSD1306& ssd1306) {
+
+        if (!this->isDraw)
+            return;
+
+        this->moveRight(ssd1306);
+        this->moveUp(ssd1306);
+    }
+
     void moveRightDown(Adafruit_SSD1306& ssd1306) {
 
         if (!this->isDraw)
@@ -364,8 +391,8 @@ void setup() {
 
 void loop() {
 
-    twoDrObject.moveRightDown(oledDisplay);
-    oledDisplay.display();
+  /*  twoDrObject.moveRightDown(oledDisplay);
+    oledDisplay.display();*/
     //delayMicroseconds(1000);
 
 }
