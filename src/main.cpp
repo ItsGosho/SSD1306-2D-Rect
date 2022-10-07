@@ -10,6 +10,11 @@
 
 Adafruit_SSD1306 oledDisplay;
 
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+
 #define OP_TL 0
 #define OP_TC 1
 #define OP_TR 2
@@ -168,6 +173,36 @@ public:
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y - 1;
     }
 
+    /*TODO: Move to private*/
+    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& dir, const uint8_t& length) {
+
+        switch (dir) {
+
+            case UP:
+                ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), WHITE);
+                ssd1306.display();
+                break;
+
+            case DOWN:
+                ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), WHITE);
+                ssd1306.display();
+                break;
+
+            case LEFT:
+                ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, WHITE);
+                ssd1306.display();
+                break;
+
+            case RIGHT:
+                ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, WHITE);
+                ssd1306.display();
+                break;
+
+            default:
+                break;
+        }
+    }
+
 private:
     uint8_t width;
     uint8_t height;
@@ -289,8 +324,13 @@ void setup() {
 
     TwoDPoint twoDPoint = TwoDPoint{(OLED_WIDTH / 2) - 1, (OLED_HEIGHT / 2) - 1};
 
-    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
+    twoDrObject.drawLine(oledDisplay, twoDPoint, LEFT, 10);
     delay(2000);
+    oledDisplay.clearDisplay();
+    twoDrObject.drawLine(oledDisplay, twoDPoint, RIGHT, 10);
+
+/*    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
+    delay(2000);*/
 
 
     /*oledDisplay.writePixel(0,0, WHITE);
@@ -299,7 +339,7 @@ void setup() {
 
 void loop() {
 
-    twoDrObject.moveUp(oledDisplay);
-    delay(500);
+    /*   twoDrObject.moveUp(oledDisplay);
+       delay(500);*/
 
 }
