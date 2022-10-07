@@ -126,15 +126,19 @@ public:
 
             case LEFT_UP:
                 this->moveLeftUp(ssd1306);
+                break;
 
             case LEFT_DOWN:
                 this->moveLeftDown(ssd1306);
+                break;
 
             case RIGHT_UP:
                 this->moveRightUp(ssd1306);
+                break;
 
             case RIGHT_DOWN:
                 this->moveRightDown(ssd1306);
+                break;
 
             default:
                 break;
@@ -245,15 +249,110 @@ public:
         this->moveDown(ssd1306);
     }
 
-    bool checkCollision(TwoDRObject twoDrObject) {
-        bool collisionX = this->innerPoint.topLeft.x + this->width > twoDrObject.innerPoint.topLeft.x && twoDrObject.innerPoint.topLeft.x + twoDrObject.width > this->innerPoint.topLeft.x;
-        bool collisionY = this->innerPoint.topLeft.y + this->height > twoDrObject.innerPoint.topLeft.y && twoDrObject.innerPoint.topLeft.y + twoDrObject.height > this->innerPoint.topLeft.y;
+    bool checkCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
+        bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
 
         return collisionX && collisionY;
     }
 
-    bool isNextMoveCollision(TwoDRObject twoDrObject) {
+    bool isMoveCollision(TwoDRObject secondObject, const uint8_t& direction) {
 
+        if (!this->isDraw)
+            return false;
+
+        switch (direction) {
+            case UP:
+                this->isUpMoveCollision(secondObject);
+                break;
+
+            case DOWN:
+                this->isDownMoveCollision(secondObject);
+                break;
+
+            case LEFT:
+                this->isLeftMoveCollision(secondObject);
+                break;
+
+            case RIGHT:
+                this->isRightMoveCollision(secondObject);
+                break;
+
+            case LEFT_UP:
+                this->isLeftUpMoveCollision(secondObject);
+                break;
+
+            case LEFT_DOWN:
+                this->isLeftDownMoveCollision(secondObject);
+                break;
+
+            case RIGHT_UP:
+                this->isRightUpMoveCollision(secondObject);
+                break;
+
+            case RIGHT_DOWN:
+                this->isRightDownMoveCollision(secondObject);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    bool isRightMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
+
+        return collisionX && collisionY;
+    }
+
+    bool isLeftMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
+
+        return collisionX && collisionY;
+    }
+
+    bool isUpMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
+        bool collisionY = this->innerPoint.topLeft.y - 1 + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
+
+        return collisionX && collisionY;
+    }
+
+    bool isDownMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
+        bool collisionY = this->innerPoint.topLeft.y + 1 + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
+
+        return collisionX && collisionY;
+    }
+
+    bool isLeftUpMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height - 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
+
+        return collisionX && collisionY;
+    }
+
+    bool isLeftDownMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height + 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
+
+        return collisionX && collisionY;
+    }
+
+    bool isRightUpMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height - 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
+
+        return collisionX && collisionY;
+    }
+
+    bool isRightDownMoveCollision(TwoDRObject secondObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
+        bool collisionY = this->innerPoint.topLeft.y + this->height + 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
+
+        return collisionX && collisionY;
     }
 
 private:
@@ -431,10 +530,9 @@ void setup() {
     while (true) {
         firstObject.moveRight(oledDisplay);
         oledDisplay.display();
-        if (firstObject.checkCollision(secondObject)) {
+        if (firstObject.isRightMoveCollision(secondObject)) {
 
             secondObject.redraw(oledDisplay);
-            firstObject.moveLeft(oledDisplay);
             firstObject.moveLeft(oledDisplay);
             oledDisplay.display();
             Serial.println("Collision1!");
