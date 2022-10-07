@@ -29,5 +29,5 @@ Then you know the pain, when trying to create a simple game using only it. It is
 - **Object tracking** - Create your rectangular object and draw it onto the display. Keep track of its position.
 - **Object collision detection** - Check if your rectangular object doesn't collide with another one.
 - **Object moving** - Move your object into basic direction, including diagonal ones by given position in your object
-- **Object distance** - Measure the distance from your object to another by given position in your object**?**
+- **Object distance** - Measure the distance from your object to another by a inner point or specific point**?**
 - **Object swapping** - Swap two objects onto the display**?**

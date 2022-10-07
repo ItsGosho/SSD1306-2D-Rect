@@ -1,0 +1,11 @@
+#ifndef ITSGOSHO_SSD1306_2D_R_H
+#define ITSGOSHO_SSD1306_2D_R_H
+
+
+class SSD1306TwoDR {
+
+
+};
+
+
+#endif //ITSGOSHO_SSD1306_2D_R_H
