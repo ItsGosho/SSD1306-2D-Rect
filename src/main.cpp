@@ -90,21 +90,17 @@ public:
         if (!this->isDraw)
             return;
 
-        for (uint8_t y = this->innerPoint.topLeft.y; y < (this->innerPoint.topLeft.y + this->height); ++y) {
-            ssd1306.drawPixel(this->innerPoint.topLeft.x - 1, y, WHITE);
-        }
+        TwoDPoint createLinePoint{(uint8_t) (this->innerPoint.topLeft.x - 1), this->innerPoint.topLeft.y};
+        this->drawLineDown(ssd1306, createLinePoint, this->height, WHITE);
 
-        ssd1306.display();
-        this->innerPoint.topLeft.x = this->innerPoint.topLeft.x - 1;
-        this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x - 1;
-
-        for (uint8_t y = this->innerPoint.topRight.y; y < (this->innerPoint.topRight.y + this->height); ++y) {
-            ssd1306.drawPixel(this->innerPoint.topRight.x, y, BLACK);
-        }
+        TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topRight.x), this->innerPoint.topRight.y};
+        this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
 
         ssd1306.display();
         this->innerPoint.topRight.x = this->innerPoint.topRight.x - 1;
         this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x - 1;
+        this->innerPoint.topLeft.x = this->innerPoint.topLeft.x - 1;
+        this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x - 1;
     }
 
     void moveRight(Adafruit_SSD1306& ssd1306) {
@@ -112,21 +108,17 @@ public:
         if (!this->isDraw)
             return;
 
-        for (uint8_t y = this->innerPoint.topRight.y; y < (this->innerPoint.topRight.y + this->height); ++y) {
-            ssd1306.drawPixel(this->innerPoint.topRight.x + 1, y, WHITE);
-        }
+        TwoDPoint createLinePoint{(uint8_t) (this->innerPoint.topRight.x + 1), this->innerPoint.topRight.y};
+        this->drawLineDown(ssd1306, createLinePoint, this->height, WHITE);
 
-        ssd1306.display();
-        this->innerPoint.topRight.x = this->innerPoint.topRight.x + 1;
-        this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x + 1;
-
-        for (uint8_t y = this->innerPoint.topLeft.y; y < (this->innerPoint.topLeft.y + this->height); ++y) {
-            ssd1306.drawPixel(this->innerPoint.topLeft.x, y, BLACK);
-        }
+        TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topLeft.x), this->innerPoint.topLeft.y};
+        this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
 
         ssd1306.display();
         this->innerPoint.topLeft.x = this->innerPoint.topLeft.x + 1;
         this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x + 1;
+        this->innerPoint.topRight.x = this->innerPoint.topRight.x + 1;
+        this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x + 1;
     }
 
     void moveDown(Adafruit_SSD1306& ssd1306) {
@@ -134,19 +126,15 @@ public:
         if (!this->isDraw)
             return;
 
-        for (uint8_t x = this->innerPoint.bottomLeft.x; x < (this->innerPoint.bottomLeft.x + this->width); ++x) {
-            ssd1306.drawPixel(x, this->innerPoint.bottomLeft.y + 1, WHITE);
-        }
+        TwoDPoint createLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y + 1)};
+        this->drawLineRight(ssd1306, createLinePoint, this->width, WHITE);
+
+        TwoDPoint clearLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y)};
+        this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
 
         ssd1306.display();
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y + 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y + 1;
-
-        for (uint8_t x = this->innerPoint.topLeft.x; x < (this->innerPoint.topLeft.x + this->width); ++x) {
-            ssd1306.drawPixel(x, this->innerPoint.topLeft.y, BLACK);
-        }
-
-        ssd1306.display();
         this->innerPoint.topLeft.y = this->innerPoint.topLeft.y + 1;
         this->innerPoint.topRight.y = this->innerPoint.topRight.y + 1;
     }
@@ -156,21 +144,18 @@ public:
         if (!this->isDraw)
             return;
 
-        for (uint8_t x = this->innerPoint.topLeft.x; x < (this->innerPoint.topLeft.x + this->width); ++x) {
-            ssd1306.drawPixel(x, this->innerPoint.topLeft.y - 1, WHITE);
-        }
+        TwoDPoint createLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y - 1)};
+        this->drawLineRight(ssd1306, createLinePoint, this->width, WHITE);
+
+        TwoDPoint clearLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y)};
+        this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
 
         ssd1306.display();
-        this->innerPoint.topLeft.y = this->innerPoint.topLeft.y - 1;
-        this->innerPoint.topRight.y = this->innerPoint.topRight.y - 1;
 
-        for (uint8_t x = this->innerPoint.bottomLeft.x; x < (this->innerPoint.bottomLeft.x + this->width); ++x) {
-            ssd1306.drawPixel(x, this->innerPoint.bottomLeft.y, BLACK);
-        }
-
-        ssd1306.display();
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y - 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y - 1;
+        this->innerPoint.topLeft.y = this->innerPoint.topLeft.y - 1;
+        this->innerPoint.topRight.y = this->innerPoint.topRight.y - 1;
     }
 
 private:
@@ -339,8 +324,8 @@ void setup() {
 
     TwoDPoint twoDPoint = TwoDPoint{(OLED_WIDTH / 2) - 1, (OLED_HEIGHT / 2) - 1};
 
-/*    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
-    delay(2000);*/
+    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
+    delay(2000);
 
 
     /*oledDisplay.writePixel(0,0, WHITE);
@@ -349,7 +334,7 @@ void setup() {
 
 void loop() {
 
-    /*   twoDrObject.moveUp(oledDisplay);
-       delay(500);*/
+    twoDrObject.moveLeft(oledDisplay);
+    delay(500);
 
 }
