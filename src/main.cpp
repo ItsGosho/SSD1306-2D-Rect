@@ -109,6 +109,18 @@ public:
                 this->moveRight(ssd1306);
                 break;
 
+            case LEFT_UP:
+                this->moveLeftUp(ssd1306);
+
+            case LEFT_DOWN:
+                this->moveLeftDown(ssd1306);
+
+            case RIGHT_UP:
+                this->moveRightUp(ssd1306);
+
+            case RIGHT_DOWN:
+                this->moveRightDown(ssd1306);
+
             default:
                 break;
         }
@@ -391,8 +403,8 @@ void setup() {
 
 void loop() {
 
-  /*  twoDrObject.moveRightDown(oledDisplay);
-    oledDisplay.display();*/
+    /*  twoDrObject.moveRightDown(oledDisplay);
+      oledDisplay.display();*/
     //delayMicroseconds(1000);
 
 }
