@@ -85,6 +85,33 @@ public:
         this->isDraw = true;
     }
 
+    void move(Adafruit_SSD1306& ssd1306, const uint8_t& direction) {
+
+        if (!this->isDraw)
+            return;
+
+        switch (direction) {
+            case UP:
+                this->moveUp(ssd1306);
+                break;
+
+            case DOWN:
+                this->moveDown(ssd1306);
+                break;
+
+            case LEFT:
+                this->moveLeft(ssd1306);
+                break;
+
+            case RIGHT:
+                this->moveRight(ssd1306);
+                break;
+
+            default:
+                break;
+        }
+    }
+
     void moveLeft(Adafruit_SSD1306& ssd1306) {
 
         if (!this->isDraw)
