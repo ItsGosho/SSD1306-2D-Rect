@@ -273,24 +273,24 @@ private:
         }
     }
 
-    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& direction, const uint8_t& length) {
+    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& direction, const uint8_t& length, const uint16_t& color) {
 
         switch (direction) {
 
             case UP:
-                this->drawLineUp(ssd1306, from, length);
+                this->drawLineUp(ssd1306, from, length, color);
                 break;
 
             case DOWN:
-                this->drawLineDown(ssd1306, from, length);
+                this->drawLineDown(ssd1306, from, length, color);
                 break;
 
             case LEFT:
-                this->drawLineLeft(ssd1306, from, length);
+                this->drawLineLeft(ssd1306, from, length, color);
                 break;
 
             case RIGHT:
-                this->drawLineRight(ssd1306, from, length);
+                this->drawLineRight(ssd1306, from, length, color);
                 break;
 
             default:
@@ -298,23 +298,23 @@ private:
         }
     }
 
-    void drawLineUp(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
-        ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), WHITE);
+    void drawLineUp(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
         ssd1306.display();
     }
 
-    void drawLineDown(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
-        ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), WHITE);
+    void drawLineDown(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
         ssd1306.display();
     }
 
-    void drawLineLeft(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
-        ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, WHITE);
+    void drawLineLeft(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
         ssd1306.display();
     }
 
-    void drawLineRight(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
-        ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, WHITE);
+    void drawLineRight(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
         ssd1306.display();
     }
 };
