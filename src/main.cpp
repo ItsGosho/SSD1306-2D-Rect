@@ -87,6 +87,21 @@ public:
         this->isDraw = true;
     }
 
+    //In case parts of the given object were deleted due to collision with another object
+    void redraw(Adafruit_SSD1306& ssd1306) {
+
+        if (!this->isDraw)
+            return;
+
+        TwoDPoint topLeft = this->innerPoint.topLeft;
+
+        for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
+            for (uint8_t x = topLeft.x; x < (topLeft.x + this->width); ++x) {
+                ssd1306.drawPixel(x, y, WHITE);
+            }
+        }
+    }
+
     void move(Adafruit_SSD1306& ssd1306, const uint8_t& direction) {
 
         if (!this->isDraw)
@@ -228,6 +243,17 @@ public:
 
         this->moveRight(ssd1306);
         this->moveDown(ssd1306);
+    }
+
+    bool checkCollision(TwoDRObject twoDrObject) {
+        bool collisionX = this->innerPoint.topLeft.x + this->width > twoDrObject.innerPoint.topLeft.x && twoDrObject.innerPoint.topLeft.x + twoDrObject.width > this->innerPoint.topLeft.x;
+        bool collisionY = this->innerPoint.topLeft.y + this->height > twoDrObject.innerPoint.topLeft.y && twoDrObject.innerPoint.topLeft.y + twoDrObject.height > this->innerPoint.topLeft.y;
+
+        return collisionX && collisionY;
+    }
+
+    bool isNextMoveCollision(TwoDRObject twoDrObject) {
+
     }
 
 private:
@@ -372,10 +398,13 @@ private:
     }
 };
 
-TwoDRObject twoDrObject;
+TwoDRObject firstObject;
+TwoDRObject secondObject;
 
 /*
  * TODO: Следващото нещо, което трябва да направя е да сложа пример за това рисуване спрямо част от обекта в README-то :)
+ * move с предварително зададени брой движения
+ * директно при създаването на object-a да сложа кой е дисплея вместо всеки път да го подавам
  * */
 void setup() {
     Serial.begin(9600);
@@ -388,13 +417,41 @@ void setup() {
     delay(2000);
     oledDisplay.clearDisplay();
 
-    twoDrObject = TwoDRObject(10, 10);
+    firstObject = TwoDRObject(10, 10);
+    secondObject = TwoDRObject(10, 10);
 
-    TwoDPoint twoDPoint = TwoDPoint{(OLED_WIDTH / 2) - 1, (OLED_HEIGHT / 2) - 1};
+    TwoDPoint centerLeftPoint = TwoDPoint{0, (OLED_HEIGHT / 2) - 1};
+    TwoDPoint centerRightPoint = TwoDPoint{OLED_WIDTH - 1, (OLED_HEIGHT / 2) - 1};
 
-    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
+    firstObject.draw(oledDisplay, centerLeftPoint, OP_LC);
+    secondObject.draw(oledDisplay, centerRightPoint, OP_RC);
     oledDisplay.display();
     delay(2000);
+
+    while (true) {
+        firstObject.moveRight(oledDisplay);
+        oledDisplay.display();
+        if (firstObject.checkCollision(secondObject)) {
+
+            secondObject.redraw(oledDisplay);
+            firstObject.moveLeft(oledDisplay);
+            firstObject.moveLeft(oledDisplay);
+            oledDisplay.display();
+            Serial.println("Collision1!");
+            break;
+        }
+        secondObject.moveLeft(oledDisplay);
+        oledDisplay.display();
+        if (firstObject.checkCollision(secondObject)) {
+            Serial.println("Collision2!");
+            secondObject.moveRight(oledDisplay);
+            oledDisplay.display();
+            break;
+        }
+        delay(100);
+    }
+
+    //twoDrObject.checkCollision();
 
 
     /*oledDisplay.writePixel(0,0, WHITE);
