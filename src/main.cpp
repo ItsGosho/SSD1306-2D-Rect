@@ -173,36 +173,6 @@ public:
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y - 1;
     }
 
-    /*TODO: Move to private*/
-    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& dir, const uint8_t& length) {
-
-        switch (dir) {
-
-            case UP:
-                ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), WHITE);
-                ssd1306.display();
-                break;
-
-            case DOWN:
-                ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), WHITE);
-                ssd1306.display();
-                break;
-
-            case LEFT:
-                ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, WHITE);
-                ssd1306.display();
-                break;
-
-            case RIGHT:
-                ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, WHITE);
-                ssd1306.display();
-                break;
-
-            default:
-                break;
-        }
-    }
-
 private:
     uint8_t width;
     uint8_t height;
@@ -302,6 +272,51 @@ private:
                 break;
         }
     }
+
+    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& direction, const uint8_t& length) {
+
+        switch (direction) {
+
+            case UP:
+                this->drawLineUp(ssd1306, from, length);
+                break;
+
+            case DOWN:
+                this->drawLineDown(ssd1306, from, length);
+                break;
+
+            case LEFT:
+                this->drawLineLeft(ssd1306, from, length);
+                break;
+
+            case RIGHT:
+                this->drawLineRight(ssd1306, from, length);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    void drawLineUp(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
+        ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), WHITE);
+        ssd1306.display();
+    }
+
+    void drawLineDown(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
+        ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), WHITE);
+        ssd1306.display();
+    }
+
+    void drawLineLeft(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
+        ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, WHITE);
+        ssd1306.display();
+    }
+
+    void drawLineRight(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length) {
+        ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, WHITE);
+        ssd1306.display();
+    }
 };
 
 TwoDRObject twoDrObject;
@@ -323,11 +338,6 @@ void setup() {
     twoDrObject = TwoDRObject(10, 10);
 
     TwoDPoint twoDPoint = TwoDPoint{(OLED_WIDTH / 2) - 1, (OLED_HEIGHT / 2) - 1};
-
-    twoDrObject.drawLine(oledDisplay, twoDPoint, LEFT, 10);
-    delay(2000);
-    oledDisplay.clearDisplay();
-    twoDrObject.drawLine(oledDisplay, twoDPoint, RIGHT, 10);
 
 /*    twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
     delay(2000);*/
