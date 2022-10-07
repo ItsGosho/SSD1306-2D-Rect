@@ -14,6 +14,10 @@ Adafruit_SSD1306 oledDisplay;
 #define DOWN 1
 #define LEFT 2
 #define RIGHT 3
+#define LEFT_UP 4
+#define LEFT_DOWN 5
+#define RIGHT_UP 6
+#define RIGHT_DOWN 7
 
 #define OP_TL 0
 #define OP_TC 1
@@ -66,8 +70,6 @@ public:
                 ssd1306.drawPixel(x, y, WHITE);
             }
         }
-
-        ssd1306.display();
 
         uint8_t bottomRightX = topLeft.x + (width - 1);
         uint8_t bottomRightY = topLeft.y + (height - 1);
@@ -123,7 +125,6 @@ public:
         TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topRight.x), this->innerPoint.topRight.y};
         this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
 
-        ssd1306.display();
         this->innerPoint.topRight.x = this->innerPoint.topRight.x - 1;
         this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x - 1;
         this->innerPoint.topLeft.x = this->innerPoint.topLeft.x - 1;
@@ -141,7 +142,6 @@ public:
         TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topLeft.x), this->innerPoint.topLeft.y};
         this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
 
-        ssd1306.display();
         this->innerPoint.topLeft.x = this->innerPoint.topLeft.x + 1;
         this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x + 1;
         this->innerPoint.topRight.x = this->innerPoint.topRight.x + 1;
@@ -159,7 +159,6 @@ public:
         TwoDPoint clearLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y)};
         this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
 
-        ssd1306.display();
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y + 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y + 1;
         this->innerPoint.topLeft.y = this->innerPoint.topLeft.y + 1;
@@ -177,12 +176,19 @@ public:
         TwoDPoint clearLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y)};
         this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
 
-        ssd1306.display();
-
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y - 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y - 1;
         this->innerPoint.topLeft.y = this->innerPoint.topLeft.y - 1;
         this->innerPoint.topRight.y = this->innerPoint.topRight.y - 1;
+    }
+
+    void moveRightDown(Adafruit_SSD1306& ssd1306) {
+
+        if (!this->isDraw)
+            return;
+
+        this->moveRight(ssd1306);
+        this->moveDown(ssd1306);
     }
 
 private:
@@ -312,22 +318,18 @@ private:
 
     void drawLineUp(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
         ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
-        ssd1306.display();
     }
 
     void drawLineDown(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
         ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
-        ssd1306.display();
     }
 
     void drawLineLeft(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
         ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
-        ssd1306.display();
     }
 
     void drawLineRight(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
         ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
-        ssd1306.display();
     }
 };
 
@@ -352,6 +354,7 @@ void setup() {
     TwoDPoint twoDPoint = TwoDPoint{(OLED_WIDTH / 2) - 1, (OLED_HEIGHT / 2) - 1};
 
     twoDrObject.draw(oledDisplay, twoDPoint, OP_C);
+    oledDisplay.display();
     delay(2000);
 
 
@@ -361,7 +364,8 @@ void setup() {
 
 void loop() {
 
-    twoDrObject.moveLeft(oledDisplay);
-    delay(500);
+    twoDrObject.moveRightDown(oledDisplay);
+    oledDisplay.display();
+    //delayMicroseconds(1000);
 
 }
