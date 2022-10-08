@@ -347,6 +347,26 @@ public:
         return collisionX && collisionY;
     }
 
+    bool isFront(const TwoDRObject& object) {
+        return object.innerPoint.bottomLeft.x > this->innerPoint.topRight.x;
+    }
+
+    bool isAbove(const TwoDRObject& object) {
+        return object.innerPoint.bottomLeft.y < this->innerPoint.topLeft.y;
+    }
+
+    bool isBehind(const TwoDRObject& object) {
+        return object.innerPoint.topRight.x < this->innerPoint.topLeft.x;
+    }
+
+    bool isBetween(const TwoDRObject& object) {
+        return !this->isFront(object) && !this->isBehind(object);
+    }
+
+    bool isBelow(const TwoDRObject& object) {
+        return object.innerPoint.topRight.y > this->innerPoint.bottomRight.y;
+    }
+
 private:
     uint8_t width;
     uint8_t height;
@@ -540,10 +560,16 @@ void setup() {
          delay(100);
      }*/
 
-    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH, 1);
-    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH, 1);
-    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2);
-    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2);
+    TwoDRObject tileLeft = TwoDRObject(3, 11);
+    TwoDRObject tileRight = TwoDRObject(3, 11);
+
+    tileLeft.draw(oledDisplay, {15, OLED_HEIGHT / 2 - 1}, OP_C);
+    tileRight.draw(oledDisplay, {OLED_WIDTH - 15 - 1, OLED_HEIGHT / 2 - 1}, OP_C);
+
+    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH - 1, 1);
+    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH - 1, 1);
+    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1);
+    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1);
 
     topBorder.draw(oledDisplay, {0, 0}, OP_TL);
     bottomBorder.draw(oledDisplay, {0, OLED_HEIGHT - 1}, OP_TL);
@@ -566,10 +592,18 @@ void setup() {
             currentDirection = random(0, 4);
         }
 
-        while (!pixelBall.isMoveCollision(topBorder, currentDirection) &&
-               !pixelBall.isMoveCollision(bottomBorder, currentDirection) &&
-               !pixelBall.isMoveCollision(leftBorder, currentDirection) &&
-               !pixelBall.isMoveCollision(rightBorder, currentDirection)) {
+        while (!pixelBall.isMoveCollision(topBorder, currentDirection) && !pixelBall.isMoveCollision(bottomBorder, currentDirection) && !pixelBall.isMoveCollision(leftBorder, currentDirection) && !pixelBall.isMoveCollision(rightBorder, currentDirection) && !pixelBall.isMoveCollision(tileLeft, currentDirection) && !pixelBall.isMoveCollision(tileRight, currentDirection)) {
+
+            if(pixelBall.isBetween(tileLeft)) {
+                Serial.println("Left lose!");
+                return;
+            }
+
+            if(tileRight.isBetween(pixelBall)) {
+                Serial.println("Right lose!");
+                return;
+            }
+
             pixelBall.move(oledDisplay, currentDirection);
             oledDisplay.display();
             delayMicroseconds(500);
