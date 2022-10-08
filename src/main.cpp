@@ -263,36 +263,28 @@ public:
 
         switch (direction) {
             case UP:
-                this->isUpMoveCollision(secondObject);
-                break;
+                return this->isUpMoveCollision(secondObject);
 
             case DOWN:
-                this->isDownMoveCollision(secondObject);
-                break;
+                return this->isDownMoveCollision(secondObject);
 
             case LEFT:
-                this->isLeftMoveCollision(secondObject);
-                break;
+                return this->isLeftMoveCollision(secondObject);
 
             case RIGHT:
-                this->isRightMoveCollision(secondObject);
-                break;
+                return this->isRightMoveCollision(secondObject);
 
             case LEFT_UP:
-                this->isLeftUpMoveCollision(secondObject);
-                break;
+                return this->isLeftUpMoveCollision(secondObject);
 
             case LEFT_DOWN:
-                this->isLeftDownMoveCollision(secondObject);
-                break;
+                return this->isLeftDownMoveCollision(secondObject);
 
             case RIGHT_UP:
-                this->isRightUpMoveCollision(secondObject);
-                break;
+                return this->isRightUpMoveCollision(secondObject);
 
             case RIGHT_DOWN:
-                this->isRightDownMoveCollision(secondObject);
-                break;
+                return this->isRightDownMoveCollision(secondObject);
 
             default:
                 break;
@@ -513,40 +505,77 @@ void setup() {
     oledDisplay = Adafruit_SSD1306(OLED_WIDTH, OLED_HEIGHT, &Wire);
     oledDisplay.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
-    delay(2000);
     oledDisplay.clearDisplay();
 
-    firstObject = TwoDRObject(10, 10);
-    secondObject = TwoDRObject(10, 10);
+    //firstObject = TwoDRObject(10, 10);
+    //secondObject = TwoDRObject(10, 10);
 
-    TwoDPoint centerLeftPoint = TwoDPoint{0, (OLED_HEIGHT / 2) - 1};
-    TwoDPoint centerRightPoint = TwoDPoint{OLED_WIDTH - 1, (OLED_HEIGHT / 2) - 1};
+    /*  TwoDPoint centerLeftPoint = TwoDPoint{0, (OLED_HEIGHT / 2) - 1};
+      TwoDPoint centerRightPoint = TwoDPoint{OLED_WIDTH - 1, (OLED_HEIGHT / 2) - 1};
 
-    firstObject.draw(oledDisplay, centerLeftPoint, OP_LC);
-    secondObject.draw(oledDisplay, centerRightPoint, OP_RC);
+      firstObject.draw(oledDisplay, centerLeftPoint, OP_LC);
+      secondObject.draw(oledDisplay, centerRightPoint, OP_RC);
+      oledDisplay.display();
+      delay(2000);*/
+
+    /* while (true) {
+         firstObject.moveRight(oledDisplay);
+         oledDisplay.display();
+         if (firstObject.isRightMoveCollision(secondObject)) {
+
+             secondObject.redraw(oledDisplay);
+             firstObject.moveLeft(oledDisplay);
+             oledDisplay.display();
+             Serial.println("Collision1!");
+             break;
+         }
+         secondObject.moveLeft(oledDisplay);
+         oledDisplay.display();
+         if (firstObject.checkCollision(secondObject)) {
+             Serial.println("Collision2!");
+             secondObject.moveRight(oledDisplay);
+             oledDisplay.display();
+             break;
+         }
+         delay(100);
+     }*/
+
+    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH, 1);
+    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH, 1);
+    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2);
+    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2);
+
+    topBorder.draw(oledDisplay, {0, 0}, OP_TL);
+    bottomBorder.draw(oledDisplay, {0, OLED_HEIGHT - 1}, OP_TL);
+    leftBorder.draw(oledDisplay, {0, 1}, OP_TL);
+    rightBorder.draw(oledDisplay, {OLED_WIDTH - 1, 1}, OP_TL);
+
+    TwoDRObject pixelBall = TwoDRObject(5, 5);
+    pixelBall.draw(oledDisplay, {OLED_WIDTH / 2, OLED_HEIGHT / 2}, OP_C);
+
     oledDisplay.display();
-    delay(2000);
+
+    bool isDiagonalRandomTime = false;
+
+    uint8_t currentDirection;
 
     while (true) {
-        firstObject.moveRight(oledDisplay);
-        oledDisplay.display();
-        if (firstObject.isRightMoveCollision(secondObject)) {
+        if (isDiagonalRandomTime) {
+            currentDirection = random(4, 8);
+        } else {
+            currentDirection = random(0, 4);
+        }
 
-            secondObject.redraw(oledDisplay);
-            firstObject.moveLeft(oledDisplay);
+        while (!pixelBall.isMoveCollision(topBorder, currentDirection) &&
+               !pixelBall.isMoveCollision(bottomBorder, currentDirection) &&
+               !pixelBall.isMoveCollision(leftBorder, currentDirection) &&
+               !pixelBall.isMoveCollision(rightBorder, currentDirection)) {
+            pixelBall.move(oledDisplay, currentDirection);
             oledDisplay.display();
-            Serial.println("Collision1!");
-            break;
+            delayMicroseconds(500);
         }
-        secondObject.moveLeft(oledDisplay);
-        oledDisplay.display();
-        if (firstObject.checkCollision(secondObject)) {
-            Serial.println("Collision2!");
-            secondObject.moveRight(oledDisplay);
-            oledDisplay.display();
-            break;
-        }
-        delay(100);
+
+        isDiagonalRandomTime = !isDiagonalRandomTime;
     }
 
     //twoDrObject.checkCollision();
