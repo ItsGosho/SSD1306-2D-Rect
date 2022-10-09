@@ -1,4 +1,26 @@
-   TwoDRObject tileLeft = TwoDRObject(3, 11, oledDisplay);
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_SSD1306.h>
+#include "TwoDRObject.h"
+
+#define OLED_SDA_PIN 27
+#define OLED_SCL_PIN 26
+
+#define OLED_WIDTH 128
+#define OLED_HEIGHT 32
+
+Adafruit_SSD1306 oledDisplay;
+
+void setup() {
+    Serial.begin(9600);
+    Wire.setPins(OLED_SDA_PIN, OLED_SCL_PIN);
+
+    oledDisplay = Adafruit_SSD1306(OLED_WIDTH, OLED_HEIGHT, &Wire);
+    oledDisplay.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+    oledDisplay.clearDisplay();
+
+    TwoDRObject tileLeft = TwoDRObject(3, 11, oledDisplay);
     TwoDRObject tileRight = TwoDRObject(3, 11, oledDisplay);
 
     tileLeft.draw({15, OLED_HEIGHT / 2 - 1}, InnerPosition::C);
@@ -49,3 +71,9 @@
 
         isDiagonalRandomTime = !isDiagonalRandomTime;
     }
+
+}
+
+void loop() {
+
+}

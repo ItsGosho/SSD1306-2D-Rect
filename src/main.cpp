@@ -11,15 +11,7 @@
 
 Adafruit_SSD1306 oledDisplay;
 
-/*
- * TODO: Следващото нещо, което трябва да направя е да сложа пример за това рисуване спрямо част от обекта в README-то :)
- * move с предварително зададени брой движения
- * директно при създаването на object-a да сложа кой е дисплея вместо всеки път да го подавам
- * */
 void setup() {
-    Direction direction = Direction::RIGHT;
-    Serial.begin(9600);
-
     Wire.setPins(OLED_SDA_PIN, OLED_SCL_PIN);
 
     oledDisplay = Adafruit_SSD1306(OLED_WIDTH, OLED_HEIGHT, &Wire);
@@ -27,55 +19,10 @@ void setup() {
 
     oledDisplay.clearDisplay();
 
-    //firstObject = TwoDRObject(10, 10);
-    //secondObject = TwoDRObject(10, 10);
-
-    /*  Point centerLeftPoint = Point{0, (OLED_HEIGHT / 2) - 1};
-      Point centerRightPoint = Point{OLED_WIDTH - 1, (OLED_HEIGHT / 2) - 1};
-
-      firstObject.draw(oledDisplay, centerLeftPoint, LC);
-      secondObject.draw(oledDisplay, centerRightPoint, RC);
-      oledDisplay.display();
-      delay(2000);*/
-
-    /* while (true) {
-         firstObject.moveRight(oledDisplay);
-         oledDisplay.display();
-         if (firstObject.isRightMoveCollision(secondObject)) {
-
-             secondObject.redraw(oledDisplay);
-             firstObject.moveLeft(oledDisplay);
-             oledDisplay.display();
-             Serial.println("Collision1!");
-             break;
-         }
-         secondObject.moveLeft(oledDisplay);
-         oledDisplay.display();
-         if (firstObject.checkCollision(secondObject)) {
-             Serial.println("Collision2!");
-             secondObject.moveRight(oledDisplay);
-             oledDisplay.display();
-             break;
-         }
-         delay(100);
-     }*/
-    TwoDRObject object = TwoDRObject(3, 3, oledDisplay);
-    TwoDRObject anotherObject = TwoDRObject(3, 3, oledDisplay);
-
-    object.moveLeft();
-    object.isRightMoveCollision(anotherObject);
-
-
-    TwoDRObject tileLeft = TwoDRObject(3, 11, oledDisplay);
-    TwoDRObject tileRight = TwoDRObject(3, 11, oledDisplay);
-
-    tileLeft.draw({15, OLED_HEIGHT / 2 - 1}, InnerPosition::C);
-    tileRight.draw({OLED_WIDTH - 15 - 1, OLED_HEIGHT / 2 - 1}, InnerPosition::C);
-
-    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH - 1, 1, oledDisplay);
-    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH - 1, 1, oledDisplay);
-    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1, oledDisplay);
-    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1, oledDisplay);
+    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH, 1, oledDisplay);
+    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH, 1, oledDisplay);
+    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT, oledDisplay);
+    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT, oledDisplay);
 
     topBorder.draw({0, 0}, InnerPosition::TL);
     bottomBorder.draw({0, OLED_HEIGHT - 1}, InnerPosition::TL);
@@ -98,18 +45,7 @@ void setup() {
             currentDirection = static_cast<Direction>(random(0, 4));
         }
 
-        while (!pixelBall.isMoveCollision(topBorder, currentDirection) && !pixelBall.isMoveCollision(bottomBorder, currentDirection) && !pixelBall.isMoveCollision(leftBorder, currentDirection) && !pixelBall.isMoveCollision(rightBorder, currentDirection) && !pixelBall.isMoveCollision(tileLeft, currentDirection) && !pixelBall.isMoveCollision(tileRight, currentDirection)) {
-
-            if (!pixelBall.isFront(tileLeft) && !pixelBall.isBehind(tileLeft)) {
-                Serial.println("Left lose!");
-                return;
-            }
-
-            if (!tileRight.isFront(pixelBall) && !tileRight.isBehind(pixelBall)) {
-                Serial.println("Right lose!");
-                return;
-            }
-
+        while (!pixelBall.isMoveCollision(topBorder, currentDirection) && !pixelBall.isMoveCollision(bottomBorder, currentDirection) && !pixelBall.isMoveCollision(leftBorder, currentDirection) && !pixelBall.isMoveCollision(rightBorder, currentDirection)) {
             pixelBall.move(currentDirection);
             oledDisplay.display();
             delayMicroseconds(500);
@@ -117,18 +53,8 @@ void setup() {
 
         isDiagonalRandomTime = !isDiagonalRandomTime;
     }
-
-    //twoDrObject.checkCollision();
-
-
-    /*oledDisplay.writePixel(0,0, WHITE);
-    oledDisplay.display();*/
 }
 
 void loop() {
-
-    /*  twoDrObject.moveRightDown(oledDisplay);
-      oledDisplay.display();*/
-    //delayMicroseconds(1000);
 
 }
