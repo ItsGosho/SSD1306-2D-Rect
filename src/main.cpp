@@ -45,20 +45,20 @@ class TwoDRObject {
 
 public:
 
-    TwoDRObject() {
+    TwoDRObject(Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
     }
 
     /*
      * @param width can be only odd number. 1, 3, 5, 7 ...
      * @param height can be only odd number. 1, 3, 5, 7 ...
      * */
-    TwoDRObject(uint8_t width, uint8_t height) {
+    TwoDRObject(uint8_t width, uint8_t height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
         this->width = width;
         this->height = height;
         this->isDraw = false;
     }
 
-    void draw(Adafruit_SSD1306& ssd1306, const TwoDPoint& point, const uint8_t& relative) {
+    void draw(const TwoDPoint& point, const uint8_t& relative) {
 
         if (this->isDraw)
             return;
@@ -67,7 +67,7 @@ public:
 
         for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
             for (uint8_t x = topLeft.x; x < (topLeft.x + this->width); ++x) {
-                ssd1306.drawPixel(x, y, WHITE);
+                this->ssd1306.drawPixel(x, y, WHITE);
             }
         }
 
@@ -88,7 +88,7 @@ public:
     }
 
     //In case parts of the given object were deleted due to collision with another object
-    void redraw(Adafruit_SSD1306& ssd1306) {
+    void redraw() {
 
         if (!this->isDraw)
             return;
@@ -97,47 +97,47 @@ public:
 
         for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
             for (uint8_t x = topLeft.x; x < (topLeft.x + this->width); ++x) {
-                ssd1306.drawPixel(x, y, WHITE);
+                this->ssd1306.drawPixel(x, y, WHITE);
             }
         }
     }
 
-    void move(Adafruit_SSD1306& ssd1306, const uint8_t& direction) {
+    void move(const uint8_t& direction) {
 
         if (!this->isDraw)
             return;
 
         switch (direction) {
             case UP:
-                this->moveUp(ssd1306);
+                this->moveUp();
                 break;
 
             case DOWN:
-                this->moveDown(ssd1306);
+                this->moveDown();
                 break;
 
             case LEFT:
-                this->moveLeft(ssd1306);
+                this->moveLeft();
                 break;
 
             case RIGHT:
-                this->moveRight(ssd1306);
+                this->moveRight();
                 break;
 
             case LEFT_UP:
-                this->moveLeftUp(ssd1306);
+                this->moveLeftUp();
                 break;
 
             case LEFT_DOWN:
-                this->moveLeftDown(ssd1306);
+                this->moveLeftDown();
                 break;
 
             case RIGHT_UP:
-                this->moveRightUp(ssd1306);
+                this->moveRightUp();
                 break;
 
             case RIGHT_DOWN:
-                this->moveRightDown(ssd1306);
+                this->moveRightDown();
                 break;
 
             default:
@@ -145,16 +145,16 @@ public:
         }
     }
 
-    void moveLeft(Adafruit_SSD1306& ssd1306) {
+    void moveLeft() {
 
         if (!this->isDraw)
             return;
 
         TwoDPoint createLinePoint{(uint8_t) (this->innerPoint.topLeft.x - 1), this->innerPoint.topLeft.y};
-        this->drawLineDown(ssd1306, createLinePoint, this->height, WHITE);
+        this->drawLineDown(createLinePoint, this->height, WHITE);
 
         TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topRight.x), this->innerPoint.topRight.y};
-        this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
+        this->drawLineDown(clearLinePoint, this->height, BLACK);
 
         this->innerPoint.topRight.x = this->innerPoint.topRight.x - 1;
         this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x - 1;
@@ -162,16 +162,16 @@ public:
         this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x - 1;
     }
 
-    void moveRight(Adafruit_SSD1306& ssd1306) {
+    void moveRight() {
 
         if (!this->isDraw)
             return;
 
         TwoDPoint createLinePoint{(uint8_t) (this->innerPoint.topRight.x + 1), this->innerPoint.topRight.y};
-        this->drawLineDown(ssd1306, createLinePoint, this->height, WHITE);
+        this->drawLineDown(createLinePoint, this->height, WHITE);
 
         TwoDPoint clearLinePoint{(uint8_t) (this->innerPoint.topLeft.x), this->innerPoint.topLeft.y};
-        this->drawLineDown(ssd1306, clearLinePoint, this->height, BLACK);
+        this->drawLineDown(clearLinePoint, this->height, BLACK);
 
         this->innerPoint.topLeft.x = this->innerPoint.topLeft.x + 1;
         this->innerPoint.bottomLeft.x = this->innerPoint.bottomLeft.x + 1;
@@ -179,16 +179,16 @@ public:
         this->innerPoint.bottomRight.x = this->innerPoint.bottomRight.x + 1;
     }
 
-    void moveDown(Adafruit_SSD1306& ssd1306) {
+    void moveDown() {
 
         if (!this->isDraw)
             return;
 
         TwoDPoint createLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y + 1)};
-        this->drawLineRight(ssd1306, createLinePoint, this->width, WHITE);
+        this->drawLineRight(createLinePoint, this->width, WHITE);
 
         TwoDPoint clearLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y)};
-        this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
+        this->drawLineRight(clearLinePoint, this->width, BLACK);
 
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y + 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y + 1;
@@ -196,16 +196,16 @@ public:
         this->innerPoint.topRight.y = this->innerPoint.topRight.y + 1;
     }
 
-    void moveUp(Adafruit_SSD1306& ssd1306) {
+    void moveUp() {
 
         if (!this->isDraw)
             return;
 
         TwoDPoint createLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y - 1)};
-        this->drawLineRight(ssd1306, createLinePoint, this->width, WHITE);
+        this->drawLineRight(createLinePoint, this->width, WHITE);
 
         TwoDPoint clearLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y)};
-        this->drawLineRight(ssd1306, clearLinePoint, this->width, BLACK);
+        this->drawLineRight(clearLinePoint, this->width, BLACK);
 
         this->innerPoint.bottomLeft.y = this->innerPoint.bottomLeft.y - 1;
         this->innerPoint.bottomRight.y = this->innerPoint.bottomRight.y - 1;
@@ -213,40 +213,40 @@ public:
         this->innerPoint.topRight.y = this->innerPoint.topRight.y - 1;
     }
 
-    void moveLeftUp(Adafruit_SSD1306& ssd1306) {
+    void moveLeftUp() {
 
         if (!this->isDraw)
             return;
 
-        this->moveLeft(ssd1306);
-        this->moveUp(ssd1306);
+        this->moveLeft();
+        this->moveUp();
     }
 
-    void moveLeftDown(Adafruit_SSD1306& ssd1306) {
+    void moveLeftDown() {
 
         if (!this->isDraw)
             return;
 
-        this->moveLeft(ssd1306);
-        this->moveDown(ssd1306);
+        this->moveLeft();
+        this->moveDown();
     }
 
-    void moveRightUp(Adafruit_SSD1306& ssd1306) {
+    void moveRightUp() {
 
         if (!this->isDraw)
             return;
 
-        this->moveRight(ssd1306);
-        this->moveUp(ssd1306);
+        this->moveRight();
+        this->moveUp();
     }
 
-    void moveRightDown(Adafruit_SSD1306& ssd1306) {
+    void moveRightDown() {
 
         if (!this->isDraw)
             return;
 
-        this->moveRight(ssd1306);
-        this->moveDown(ssd1306);
+        this->moveRight();
+        this->moveDown();
     }
 
     bool checkCollision(TwoDRObject secondObject) {
@@ -359,10 +359,6 @@ public:
         return object.innerPoint.topRight.x < this->innerPoint.topLeft.x;
     }
 
-    bool isBetween(const TwoDRObject& object) {
-        return !this->isFront(object) && !this->isBehind(object);
-    }
-
     bool isBelow(const TwoDRObject& object) {
         return object.innerPoint.topRight.y > this->innerPoint.bottomRight.y;
     }
@@ -370,6 +366,7 @@ public:
 private:
     uint8_t width;
     uint8_t height;
+    Adafruit_SSD1306& ssd1306;
     TwoDRInnerPoint innerPoint;
 
     bool isDraw;
@@ -467,24 +464,24 @@ private:
         }
     }
 
-    void drawLine(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& direction, const uint8_t& length, const uint16_t& color) {
+    void drawLine(const TwoDPoint& from, const uint8_t& direction, const uint8_t& length, const uint16_t& color) {
 
         switch (direction) {
 
             case UP:
-                this->drawLineUp(ssd1306, from, length, color);
+                this->drawLineUp(from, length, color);
                 break;
 
             case DOWN:
-                this->drawLineDown(ssd1306, from, length, color);
+                this->drawLineDown(from, length, color);
                 break;
 
             case LEFT:
-                this->drawLineLeft(ssd1306, from, length, color);
+                this->drawLineLeft(from, length, color);
                 break;
 
             case RIGHT:
-                this->drawLineRight(ssd1306, from, length, color);
+                this->drawLineRight(from, length, color);
                 break;
 
             default:
@@ -492,25 +489,22 @@ private:
         }
     }
 
-    void drawLineUp(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
-        ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
+    void drawLineUp(const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        this->ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
     }
 
-    void drawLineDown(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
-        ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
+    void drawLineDown(const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        this->ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
     }
 
-    void drawLineLeft(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
-        ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
+    void drawLineLeft(const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        this->ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
     }
 
-    void drawLineRight(Adafruit_SSD1306& ssd1306, const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
-        ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
+    void drawLineRight(const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
+        this->ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
     }
 };
-
-TwoDRObject firstObject;
-TwoDRObject secondObject;
 
 /*
  * TODO: Следващото нещо, което трябва да направя е да сложа пример за това рисуване спрямо част от обекта в README-то :)
@@ -560,24 +554,24 @@ void setup() {
          delay(100);
      }*/
 
-    TwoDRObject tileLeft = TwoDRObject(3, 11);
-    TwoDRObject tileRight = TwoDRObject(3, 11);
+    TwoDRObject tileLeft = TwoDRObject(3, 11, oledDisplay);
+    TwoDRObject tileRight = TwoDRObject(3, 11, oledDisplay);
 
-    tileLeft.draw(oledDisplay, {15, OLED_HEIGHT / 2 - 1}, OP_C);
-    tileRight.draw(oledDisplay, {OLED_WIDTH - 15 - 1, OLED_HEIGHT / 2 - 1}, OP_C);
+    tileLeft.draw({15, OLED_HEIGHT / 2 - 1}, OP_C);
+    tileRight.draw({OLED_WIDTH - 15 - 1, OLED_HEIGHT / 2 - 1}, OP_C);
 
-    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH - 1, 1);
-    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH - 1, 1);
-    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1);
-    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1);
+    TwoDRObject topBorder = TwoDRObject(OLED_WIDTH - 1, 1, oledDisplay);
+    TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH - 1, 1, oledDisplay);
+    TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1, oledDisplay);
+    TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2 - 1, oledDisplay);
 
-    topBorder.draw(oledDisplay, {0, 0}, OP_TL);
-    bottomBorder.draw(oledDisplay, {0, OLED_HEIGHT - 1}, OP_TL);
-    leftBorder.draw(oledDisplay, {0, 1}, OP_TL);
-    rightBorder.draw(oledDisplay, {OLED_WIDTH - 1, 1}, OP_TL);
+    topBorder.draw({0, 0}, OP_TL);
+    bottomBorder.draw({0, OLED_HEIGHT - 1}, OP_TL);
+    leftBorder.draw({0, 1}, OP_TL);
+    rightBorder.draw({OLED_WIDTH - 1, 1}, OP_TL);
 
-    TwoDRObject pixelBall = TwoDRObject(5, 5);
-    pixelBall.draw(oledDisplay, {OLED_WIDTH / 2, OLED_HEIGHT / 2}, OP_C);
+    TwoDRObject pixelBall = TwoDRObject(5, 5, oledDisplay);
+    pixelBall.draw({OLED_WIDTH / 2, OLED_HEIGHT / 2}, OP_C);
 
     oledDisplay.display();
 
@@ -594,17 +588,17 @@ void setup() {
 
         while (!pixelBall.isMoveCollision(topBorder, currentDirection) && !pixelBall.isMoveCollision(bottomBorder, currentDirection) && !pixelBall.isMoveCollision(leftBorder, currentDirection) && !pixelBall.isMoveCollision(rightBorder, currentDirection) && !pixelBall.isMoveCollision(tileLeft, currentDirection) && !pixelBall.isMoveCollision(tileRight, currentDirection)) {
 
-            if(pixelBall.isBetween(tileLeft)) {
+            if (!pixelBall.isFront(tileLeft) && !pixelBall.isBehind(tileLeft)) {
                 Serial.println("Left lose!");
                 return;
             }
 
-            if(tileRight.isBetween(pixelBall)) {
+            if (!tileRight.isFront(pixelBall) && !tileRight.isBehind(pixelBall)) {
                 Serial.println("Right lose!");
                 return;
             }
 
-            pixelBall.move(oledDisplay, currentDirection);
+            pixelBall.move(currentDirection);
             oledDisplay.display();
             delayMicroseconds(500);
         }
