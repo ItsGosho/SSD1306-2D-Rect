@@ -5,13 +5,13 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 
 
-- The library was written alongside with the **[Pixel-Pong](https://github.com/ItsGosho/Pixel-Pong)** game, written to **test the** of **SSD1306**
+- The library was written alongside with the **Pixel-Pong** game, written to **test the** of **SSD1306**
 - The library works **only** with **rectangular objects**, **that are filled** and **have perfect center
-<img src=".\pics\Screenshot_1.png" alt="Screenshot_1" style="zoom: 25%;" />**
+<img src=".\pics\Screenshot_1.png" alt="Screenshot_1" style="zoom: 33%;" />**
 
 ## Game Ideas:
 
-##### [Pixel Pong](https://github.com/ItsGosho/Pixel-Pong):
+##### Pixel Pong:
 
 - Two moveable tiles. Hit the bouncing pixel and send it to the another tile. Try to not miss it, because you lose.
 
@@ -44,17 +44,17 @@ Then you know the pain, when trying to create a simple game using only it. It is
 - The above picture demonstrates positioning a object with size 3x3 at position X: 2 Y:2
 - It is super useful in situations, where you must place a object representing a ball at the center of the screen and create different borders
 
-<img src=".\pics\image-20221010012249955.png" alt="image-20221010012249955" style="zoom: 50%;" />
+<img src=".\pics\image-20221010012249955.png" alt="image-20221010012249955" style="zoom:67%;" />
 
 - **Note that positioning a object doesn't check for collisions!**
 
-*The [Pixel-Pong](https://github.com/ItsGosho/Pixel-Pong) game uses that. 4 borders are drawn at each side of the screen, ball is placed at the center of the screen and two tiles from both sides are placed too.*
+*The Pixel-Pong game uses that. 4 borders are drawn at each side of the screen, ball is placed at the center of the screen and two tiles from both sides are placed too.*
 
 ## Object Collision Detection:
 
 - The collision detection is straightforward. You check if a object collides with another one, but also check if a movement in given direction will cause collision.
 
-<img src=".\pics\image-20221010013350182.png" alt="image-20221010013350182" style="zoom: 33%;" />
+<img src=".\pics\image-20221010013350182.png" alt="image-20221010013350182" style="zoom:50%;" />
 
 - `redObject.checkCollision(green);`
 - `object.isMoveCollision(anotherObject, Direction::LEFT);` 
@@ -65,7 +65,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - The moving is straightforward. You move a object in a given direction:
 
-<img src=".\pics\image-20221010013927582.png" alt="image-20221010013927582" style="zoom: 33%;" />
+<img src=".\pics\image-20221010013927582.png" alt="image-20221010013927582" style="zoom:50%;" />
 
 - `object.move(Direction::LEFT);`
 - `object.moveLeft();`
@@ -81,7 +81,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - Note that a object can be above and behind at the same time relative to another object:
 
-<img src=".\pics\image-20221010014524256.png" alt="image-20221010014524256" style="zoom: 33%;" />
+<img src=".\pics\image-20221010014524256.png" alt="image-20221010014524256" style="zoom:50%;" />
 
 - Note that all of the checking are absolute, meaning that a object must be fully behind, front, above or below relative to another object.
 
@@ -89,7 +89,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 ## Additional Information:
 
-- The library was written with the idea to be used in [another project](https://github.com/ItsGosho/Pixel-Pong).
+- The library was written with the idea to be used in [another project](https://github.com/ItsGosho/Pong-Pong).
 
 - While writing the library, most of the ideas and concepts were drawn in [Excalidraw](https://excalidraw.com/) ,which is a sketching tool. You can find the latest sketches in the [excali](https://github.com/ItsGosho/SSD1306-2D-Rect/tree/dev/excali) folder.
 
