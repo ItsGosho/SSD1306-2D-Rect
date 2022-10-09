@@ -51,10 +51,12 @@ public:
     /*
      * @param width can be only odd number. 1, 3, 5, 7 ...
      * @param height can be only odd number. 1, 3, 5, 7 ...
+     * If @param width or @param height are incorrectly passed such as 2, 4, 5, 8 ..., then
+     * @param width will be +1 and @param height will be +1 to comply with the rule above.
      * */
     TwoDRObject(uint8_t width, uint8_t height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
-        this->width = width;
-        this->height = height;
+        this->setWidth(width);
+        this->setHeight(height);
         this->isDraw = false;
     }
 
@@ -503,6 +505,23 @@ private:
 
     void drawLineRight(const TwoDPoint& from, const uint8_t& length, const uint16_t& color) {
         this->ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
+    }
+
+public:
+    void setWidth(const uint8_t& width) {
+        if (width % 2 == 0) {
+            this->width = width + 1;
+        } else {
+            this->width = width;
+        }
+    }
+
+    void setHeight(const uint8_t& height) {
+        if (height % 2 == 0) {
+            this->height = height + 1;
+        } else {
+            this->height = height;
+        }
     }
 };
 
