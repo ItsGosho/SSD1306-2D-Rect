@@ -54,7 +54,7 @@ public:
      * If @param width or @param height are incorrectly passed such as 2, 4, 5, 8 ..., then
      * @param width will be +1 and @param height will be +1 to comply with the rule above.
      * */
-    TwoDRObject(uint8_t width, uint8_t height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
+    TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
         this->setWidth(width);
         this->setHeight(height);
         this->isDraw = false;
@@ -251,14 +251,14 @@ public:
         this->moveDown();
     }
 
-    bool checkCollision(TwoDRObject secondObject) {
+    bool checkCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
         bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
 
         return collisionX && collisionY;
     }
 
-    bool isMoveCollision(TwoDRObject secondObject, const uint8_t& direction) {
+    bool isMoveCollision(const TwoDRObject& secondObject, const uint8_t& direction) {
 
         if (!this->isDraw)
             return false;
@@ -293,56 +293,56 @@ public:
         }
     }
 
-    bool isRightMoveCollision(TwoDRObject secondObject) {
+    bool isRightMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
 
         return collisionX && collisionY;
     }
 
-    bool isLeftMoveCollision(TwoDRObject secondObject) {
+    bool isLeftMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y;
 
         return collisionX && collisionY;
     }
 
-    bool isUpMoveCollision(TwoDRObject secondObject) {
+    bool isUpMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
         bool collisionY = this->innerPoint.topLeft.y - 1 + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
 
         return collisionX && collisionY;
     }
 
-    bool isDownMoveCollision(TwoDRObject secondObject) {
+    bool isDownMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x;
         bool collisionY = this->innerPoint.topLeft.y + 1 + this->height > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
 
         return collisionX && collisionY;
     }
 
-    bool isLeftUpMoveCollision(TwoDRObject secondObject) {
+    bool isLeftUpMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height - 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
 
         return collisionX && collisionY;
     }
 
-    bool isLeftDownMoveCollision(TwoDRObject secondObject) {
+    bool isLeftDownMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width - 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x - 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height + 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
 
         return collisionX && collisionY;
     }
 
-    bool isRightUpMoveCollision(TwoDRObject secondObject) {
+    bool isRightUpMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height - 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y - 1;
 
         return collisionX && collisionY;
     }
 
-    bool isRightDownMoveCollision(TwoDRObject secondObject) {
+    bool isRightDownMoveCollision(const TwoDRObject& secondObject) {
         bool collisionX = this->innerPoint.topLeft.x + this->width + 1 > secondObject.innerPoint.topLeft.x && secondObject.innerPoint.topLeft.x + secondObject.width > this->innerPoint.topLeft.x + 1;
         bool collisionY = this->innerPoint.topLeft.y + this->height + 1 > secondObject.innerPoint.topLeft.y && secondObject.innerPoint.topLeft.y + secondObject.height > this->innerPoint.topLeft.y + 1;
 
