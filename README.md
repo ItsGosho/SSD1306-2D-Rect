@@ -39,12 +39,12 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - When you create a object `TwoDRObject object = TwoDRObject(3, 3, oledDisplay);` and place it on the screen at a point, you can specify which position of the object will be on the given point `object.draw({2,2}, InnerPosition::TL);` , `object.draw({2,2}, InnerPosition::BL);` and so on.
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010010820515.png" alt="image-20221010010820515" style="zoom: 67%;" />
+<img src=".\pics\image-20221010010820515.png" alt="image-20221010010820515" style="zoom: 67%;" />
 
 - The above picture demonstrates positioning a object with size 3x3 at position X: 2 Y:2
 - It is super useful in situations, where you must place a object representing a ball at the center of the screen and create different borders
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010012249955.png" alt="image-20221010012249955" style="zoom:67%;" />
+<img src=".\pics\image-20221010012249955.png" alt="image-20221010012249955" style="zoom:67%;" />
 
 - **Note that positioning a object doesn't check for collisions!**
 
@@ -54,7 +54,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - The collision detection is straightforward. You check if a object collides with another one, but also check if a movement in given direction will cause collision.
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010013350182.png" alt="image-20221010013350182" style="zoom:50%;" />
+<img src=".\pics\image-20221010013350182.png" alt="image-20221010013350182" style="zoom:50%;" />
 
 - `redObject.checkCollision(green);`
 - `object.isMoveCollision(anotherObject, Direction::LEFT);` 
@@ -65,7 +65,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - The moving is straightforward. You move a object in a given direction:
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010013927582.png" alt="image-20221010013927582" style="zoom:50%;" />
+<img src=".\pics\image-20221010013927582.png" alt="image-20221010013927582" style="zoom:50%;" />
 
 - `object.move(Direction::LEFT);`
 - `object.moveLeft();`
@@ -77,15 +77,15 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - Checking if a object is behind, front, above or below from a given object:
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014343541.png" alt="image-20221010014343541" style="zoom: 67%;" />
+<img src=".\pics\image-20221010014343541.png" alt="image-20221010014343541" style="zoom: 67%;" />
 
 - Note that a object can be above and behind at the same time relative to another object:
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014524256.png" alt="image-20221010014524256" style="zoom:50%;" />
+<img src=".\pics\image-20221010014524256.png" alt="image-20221010014524256" style="zoom:50%;" />
 
 - Note that all of the checking are absolute, meaning that a object must be fully behind, front, above or below relative to another object.
 
-<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014949557.png" alt="image-20221010014949557" style="zoom:67%;" />
+<img src=".\pics\image-20221010014949557.png" alt="image-20221010014949557" style="zoom:67%;" />
 
 ## Additional Information:
 
@@ -93,4 +93,4 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 - While writing the library, most of the ideas and concepts were drawn in [Excalidraw](https://excalidraw.com/) ,which is a sketching tool. You can find the latest sketches in the [excali](https://github.com/ItsGosho/SSD1306-2D-Rect/tree/dev/excali) folder.
 
-  <img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010015222978.png" alt="image-20221010015222978" style="zoom:50%;" />
+  <img src=".\pics\image-20221010015222978.png" alt="image-20221010015222978" style="zoom:50%;" />
