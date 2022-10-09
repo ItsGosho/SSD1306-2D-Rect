@@ -59,6 +59,12 @@ void setup() {
          }
          delay(100);
      }*/
+    TwoDRObject object = TwoDRObject(3, 3, oledDisplay);
+    TwoDRObject anotherObject = TwoDRObject(3, 3, oledDisplay);
+
+    object.moveLeft();
+    object.isRightMoveCollision(anotherObject);
+
 
     TwoDRObject tileLeft = TwoDRObject(3, 11, oledDisplay);
     TwoDRObject tileRight = TwoDRObject(3, 11, oledDisplay);

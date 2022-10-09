@@ -5,8 +5,8 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 
 
-- The library is inspired from the **Pong-Pong** game, written to **test the functionalities** of **SSD1306**
-- The library works only with **rectangular objects**, **that are filled** and **have perfect center
+- The library is inspired from the **Pong-Pong** game, written to **test the** of **SSD1306**
+- The library works **only** with **rectangular objects**, **that are filled** and **have perfect center
 <img src=".\pics\Screenshot_1.png" alt="Screenshot_1" style="zoom: 33%;" />**
 
 ## Game Ideas:
@@ -25,9 +25,72 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 ## Functionalities:
 
-- **Object positioning** - Position your object at given point depending on position in the object.
-- **Object tracking** - Create your rectangular object and draw it onto the display. Keep track of its position.
-- **Object collision detection** - Check if your rectangular object doesn't collide with another one.
-- **Object moving** - Move your object into basic direction, including diagonal ones by given position in your object
-- **Object distance** - Measure the distance from your object to another by a inner point or specific point**?**
-- **Object swapping** - Swap two objects onto the display**?**
+- **Object positioning** - Position a object at a point relative to part of it.
+- **Object collision detection** - Check if a object doesn't collide with another one
+- **Object moving** - Move your object into different direction
+
+
+
+## Example:
+
+
+
+## Object Positioning:
+
+- When you create a object `TwoDRObject object = TwoDRObject(3, 3, oledDisplay);` and place it on the screen at a point, you can specify which position of the object will be on the given point `object.draw({2,2}, InnerPosition::TL);` , `object.draw({2,2}, InnerPosition::BL);` and so on.
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010010820515.png" alt="image-20221010010820515" style="zoom: 67%;" />
+
+- The above picture demonstrates positioning a object with size 3x3 at position X: 2 Y:2
+- It is super useful in situations, where you must place a object representing a ball at the center of the screen and create different borders
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010012249955.png" alt="image-20221010012249955" style="zoom:67%;" />
+
+- **Note that positioning a object doesn't check for collisions!**
+
+*The Pixel-Pong game uses that. 4 borders are drawn at each side of the screen, ball is placed at the center of the screen and two tiles from both sides are placed too.*
+
+## Object Collision Detection:
+
+- The collision detection is straightforward. You check if a object collides with another one, but also check if a movement in given direction will cause collision.
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010013350182.png" alt="image-20221010013350182" style="zoom:50%;" />
+
+- `redObject.checkCollision(green);`
+- `object.isMoveCollision(anotherObject, Direction::LEFT);` 
+- `object.isLeftMoveCollision(anotherObject);` 
+- ...
+
+## Object Moving:
+
+- The moving is straightforward. You move a object in a given direction:
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010013927582.png" alt="image-20221010013927582" style="zoom:50%;" />
+
+- `object.move(Direction::LEFT);`
+- `object.moveLeft();`
+- ...
+
+- **Note that moving a object doesn't check for collisions!**
+
+## Object Position relative to another:
+
+- Checking if a object is behind, front, above or below from a given object:
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014343541.png" alt="image-20221010014343541" style="zoom: 67%;" />
+
+- Note that a object can be above and behind at the same time relative to another object:
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014524256.png" alt="image-20221010014524256" style="zoom:50%;" />
+
+- Note that all of the checking are absolute, meaning that a object must be fully behind, front, above or below relative to another object.
+
+<img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010014949557.png" alt="image-20221010014949557" style="zoom:67%;" />
+
+## Additional Information:
+
+- The library was written with the idea to be used in [another project](https://github.com/ItsGosho/Pong-Pong).
+
+- While writing the library, most of the ideas and concepts were drawn in [Excalidraw](https://excalidraw.com/) ,which is a sketching tool. You can find the latest sketches in the [excali](https://github.com/ItsGosho/SSD1306-2D-Rect/tree/dev/excali) folder.
+
+  <img src="C:\Users\Gosho\AppData\Roaming\Typora\typora-user-images\image-20221010015222978.png" alt="image-20221010015222978" style="zoom:50%;" />
