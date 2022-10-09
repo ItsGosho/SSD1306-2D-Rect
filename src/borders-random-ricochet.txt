@@ -3,13 +3,13 @@ TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH, 1);
 TwoDRObject leftBorder = TwoDRObject(1, OLED_HEIGHT - 2);
 TwoDRObject rightBorder = TwoDRObject(1, OLED_HEIGHT - 2);
 
-topBorder.draw(oledDisplay, {0, 0}, OP_TL);
-bottomBorder.draw(oledDisplay, {0, OLED_HEIGHT - 1}, OP_TL);
-leftBorder.draw(oledDisplay, {0, 1}, OP_TL);
-rightBorder.draw(oledDisplay, {OLED_WIDTH - 1, 1}, OP_TL);
+topBorder.draw(oledDisplay, {0, 0}, TL);
+bottomBorder.draw(oledDisplay, {0, OLED_HEIGHT - 1}, TL);
+leftBorder.draw(oledDisplay, {0, 1}, TL);
+rightBorder.draw(oledDisplay, {OLED_WIDTH - 1, 1}, TL);
 
 TwoDRObject pixelBall = TwoDRObject(5, 5);
-pixelBall.draw(oledDisplay, {OLED_WIDTH / 2, OLED_HEIGHT / 2}, OP_C);
+pixelBall.draw(oledDisplay, {OLED_WIDTH / 2, OLED_HEIGHT / 2}, C);
 
 oledDisplay.display();
 
