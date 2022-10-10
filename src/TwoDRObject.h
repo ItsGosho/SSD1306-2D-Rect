@@ -28,7 +28,7 @@ class TwoDRObject {
 
 public:
 
-    TwoDRObject(Adafruit_SSD1306& ssd1306);
+    TwoDRObject();
 
     /*
      * @param width can be only odd number. 1, 3, 5, 7 ...
@@ -95,7 +95,7 @@ public:
 private:
     uint8_t width;
     uint8_t height;
-    Adafruit_SSD1306& ssd1306;
+    Adafruit_SSD1306 ssd1306;
     InnerPoint innerPoint;
 
     bool isDraw;

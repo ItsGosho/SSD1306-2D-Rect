@@ -1,6 +1,6 @@
 #include "TwoDRObject.h"
 
-TwoDRObject::TwoDRObject(Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
+TwoDRObject::TwoDRObject() {
 }
 
 TwoDRObject::TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
