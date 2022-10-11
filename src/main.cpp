@@ -3,6 +3,8 @@
 #include <Adafruit_SSD1306.h>
 #include "TwoDRObject.h"
 
+using namespace itsgosho;
+
 #define OLED_SDA_PIN 27
 #define OLED_SCL_PIN 26
 

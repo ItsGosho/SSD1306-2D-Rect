@@ -4,27 +4,27 @@
 #include "Arduino.h"
 #include <Adafruit_SSD1306.h>
 
-struct Point {
-    uint8_t x;
-    uint8_t y;
-};
-
-struct InnerPoint {
-    Point topLeft;
-    Point topRight;
-    Point bottomLeft;
-    Point bottomRight;
-};
-
-enum Direction {
-    UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, LEFT_UP = 4, LEFT_DOWN = 5, RIGHT_UP = 6, RIGHT_DOWN = 7
-};
-
-enum InnerPosition {
-    TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
-};
-
 namespace itsgosho {
+
+    struct Point {
+        uint8_t x;
+        uint8_t y;
+    };
+
+    struct InnerPoint {
+        Point topLeft;
+        Point topRight;
+        Point bottomLeft;
+        Point bottomRight;
+    };
+
+    enum Direction {
+        UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, LEFT_UP = 4, LEFT_DOWN = 5, RIGHT_UP = 6, RIGHT_DOWN = 7
+    };
+
+    enum InnerPosition {
+        TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
+    };
 
     class TwoDRObject {
 
