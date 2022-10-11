@@ -1,11 +1,12 @@
 #include "TwoDRObject.h"
 
-TwoDRObject::TwoDRObject(Adafruit_SSD1306& ssd1306): ssd1306(ssd1306) {
+TwoDRObject::TwoDRObject() {
 }
 
-TwoDRObject::TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306& ssd1306) : ssd1306(ssd1306) {
+TwoDRObject::TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306* ssd1306) {
     this->setWidth(width);
     this->setHeight(height);
+    this->ssd1306 = ssd1306;
     this->isDraw = false;
 }
 
@@ -18,7 +19,7 @@ void TwoDRObject::draw(const Point& point, const InnerPosition& relative) {
 
     for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
         for (uint8_t x = topLeft.x; x < (topLeft.x + this->width); ++x) {
-            this->ssd1306.drawPixel(x, y, WHITE);
+            this->ssd1306->drawPixel(x, y, WHITE);
         }
     }
 
@@ -47,7 +48,7 @@ void TwoDRObject::redraw() {
 
     for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
         for (uint8_t x = topLeft.x; x < (topLeft.x + this->width); ++x) {
-            this->ssd1306.drawPixel(x, y, WHITE);
+            this->ssd1306->drawPixel(x, y, WHITE);
         }
     }
 }
@@ -448,17 +449,17 @@ void TwoDRObject::drawLine(const Point& from, const Direction& direction, const 
 }
 
 void TwoDRObject::drawLineUp(const Point& from, const uint8_t& length, const uint16_t& color) {
-    this->ssd1306.drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
+    this->ssd1306->drawLine(from.x, from.y, from.x, from.y - (length - 1), color);
 }
 
 void TwoDRObject::drawLineDown(const Point& from, const uint8_t& length, const uint16_t& color) {
-    this->ssd1306.drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
+    this->ssd1306->drawLine(from.x, from.y, from.x, from.y + (length - 1), color);
 }
 
 void TwoDRObject::drawLineLeft(const Point& from, const uint8_t& length, const uint16_t& color) {
-    this->ssd1306.drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
+    this->ssd1306->drawLine(from.x, from.y, from.x - (length - 1), from.y, color);
 }
 
 void TwoDRObject::drawLineRight(const Point& from, const uint8_t& length, const uint16_t& color) {
-    this->ssd1306.drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
+    this->ssd1306->drawLine(from.x, from.y, from.x + (length - 1), from.y, color);
 }
