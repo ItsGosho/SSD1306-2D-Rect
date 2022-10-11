@@ -104,6 +104,12 @@ namespace itsgosho {
 
         void setHeight(const uint8_t& height);
 
+        uint8_t getWidth() const;
+
+        uint8_t getHeight() const;
+
+        InnerPoint getInnerPoint() const;
+
     private:
         uint8_t width;
         uint8_t height;

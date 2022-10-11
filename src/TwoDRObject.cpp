@@ -336,6 +336,18 @@ void TwoDRObject::setHeight(const uint8_t& height) {
     }
 }
 
+uint8_t TwoDRObject::getWidth() const {
+    return this->width;
+}
+
+uint8_t TwoDRObject::getHeight() const {
+    return this->height;
+}
+
+InnerPoint TwoDRObject::getInnerPoint() const {
+    return this->innerPoint;
+}
+
 Point TwoDRObject::calculateDrawPointTL(const Point& point) const {
     uint8_t startingX = point.x;
     uint8_t startingY = point.y;
