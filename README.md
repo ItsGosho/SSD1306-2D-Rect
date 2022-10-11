@@ -1,4 +1,7 @@
 # SSD1306-2D-R
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ItsGosho/Button-Enhanced/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/v/release/ItsGosho/Button-Enhanced?include_prereleases)](https://github.com/ItsGosho/Button-Enhanced/blob/main/LICENSE)
+
 Library for working with rectangular objects build on top of **[Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)**
 
 ## Functionalities:
