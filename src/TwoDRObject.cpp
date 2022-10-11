@@ -1,5 +1,7 @@
 #include "TwoDRObject.h"
 
+using namespace itsgosho;
+
 TwoDRObject::TwoDRObject() {
 }
 
