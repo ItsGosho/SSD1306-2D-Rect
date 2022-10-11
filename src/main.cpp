@@ -40,7 +40,14 @@ void setup() {
 
     Direction currentDirection;
 
-    while (true) {
+    delay(1000);
+    pixelBall.clear();
+    oledDisplay->display();
+    delay(2000);
+    pixelBall.redraw();
+    oledDisplay->display();
+
+   /* while (true) {
         if (isDiagonalRandomTime) {
             currentDirection = static_cast<Direction>(random(4, 8));
         } else {
@@ -54,7 +61,7 @@ void setup() {
         }
 
         isDiagonalRandomTime = !isDiagonalRandomTime;
-    }
+    }*/
 }
 
 void loop() {

@@ -26,8 +26,8 @@ namespace itsgosho {
         TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
     };
 
-    template <size_t size>
-    Direction getRandomDirection(const Direction (&directions)[size]) {
+    template<size_t size>
+    Direction getRandomDirection(const Direction (& directions)[size]) {
         return directions[random(0, size)];
     }
 
@@ -109,6 +109,24 @@ namespace itsgosho {
         uint8_t getHeight() const;
 
         InnerPoint getInnerPoint() const;
+
+        /**
+         * Will clear the given object from the display.
+         * Note that you can redraw() it.
+         */
+        void clear() {
+
+            if (!this->isDraw)
+                return;
+
+            for (uint8_t y = this->innerPoint.topLeft.y; y < (this->innerPoint.topLeft.y + this->height); ++y) {
+                for (uint8_t x = this->innerPoint.topLeft.x; x < (this->innerPoint.topLeft.x + this->width); ++x) {
+                    this->ssd1306->drawPixel(x, y, BLACK);
+                }
+            }
+
+            this->isDraw = false;
+        }
 
     private:
         uint8_t width;

@@ -47,7 +47,7 @@ void TwoDRObject::draw(const Point& pont) {
 
 void TwoDRObject::redraw() {
 
-    if (!this->isDraw)
+    if (this->isDraw)
         return;
 
     Point topLeft = this->innerPoint.topLeft;
