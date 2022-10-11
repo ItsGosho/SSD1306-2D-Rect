@@ -26,6 +26,11 @@ namespace itsgosho {
         TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
     };
 
+    template <size_t size>
+    Direction getRandomDirection(const Direction (&directions)[size]) {
+        return directions[random(0, size)];
+    }
+
     class TwoDRObject {
 
     public:
