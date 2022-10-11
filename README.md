@@ -1,13 +1,5 @@
 # SSD1306-2D-R
-Have you ever worked with a library for the **SSD1306** like the **[Adafruit one](https://github.com/adafruit/Adafruit_SSD1306)**?
-
-Then you know the pain, when trying to create a simple game using only it. It is understandable, that isn't her job.
-
-
-
-- The library was written alongside with the **Pixel-Pong** game, written to **test the** of **SSD1306**
-- The library works **only** with **rectangular objects**, **that are filled** and **have perfect center
-<img src=".\pics\Screenshot_1.png" alt="Screenshot_1" style="zoom: 33%;" />**
+Library for working with rectangular objects build on top of **[Adafruit SSD1306](https://github.com/adafruit/Adafruit_SSD1306)**
 
 ## Functionalities:
 
@@ -20,7 +12,7 @@ Then you know the pain, when trying to create a simple game using only it. It is
 
 ## Example:
 
-- Creating a borders around the display and placing a ball at the center. Moving it in random direction and if a border is hit moving it in another random direction forever.
+- Creating a borders around the display and placing a ball at the center, which moves in random directions until a border is hit, then moving in another direction forever.
 
 ```c++
 #include <Arduino.h>
