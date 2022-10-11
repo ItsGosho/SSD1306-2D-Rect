@@ -40,6 +40,11 @@ public:
 
     void draw(const Point& point, const InnerPosition& relative);
 
+    /**
+     * By default, the position of the object relative to the point will be C (Center)
+     */
+    void draw(const Point& pont);
+
     void redraw();
 
     void move(const Direction& direction);

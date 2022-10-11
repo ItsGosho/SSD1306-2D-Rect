@@ -39,6 +39,10 @@ void TwoDRObject::draw(const Point& point, const InnerPosition& relative) {
     this->isDraw = true;
 }
 
+void TwoDRObject::draw(const Point& pont) {
+    return this->draw(pont, InnerPosition::C);
+}
+
 void TwoDRObject::redraw() {
 
     if (!this->isDraw)
