@@ -3,21 +3,23 @@
 #include <Adafruit_SSD1306.h>
 #include "TwoDRObject.h"
 
+using namespace itsgosho;
+
 #define OLED_SDA_PIN 27
 #define OLED_SCL_PIN 26
 
 #define OLED_WIDTH 128
 #define OLED_HEIGHT 32
 
-Adafruit_SSD1306 oledDisplay;
+Adafruit_SSD1306* oledDisplay;
 
 void setup() {
     Wire.setPins(OLED_SDA_PIN, OLED_SCL_PIN);
 
-    oledDisplay = Adafruit_SSD1306(OLED_WIDTH, OLED_HEIGHT, &Wire);
-    oledDisplay.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+    oledDisplay = new Adafruit_SSD1306(OLED_WIDTH, OLED_HEIGHT, &Wire);
+    oledDisplay->begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
-    oledDisplay.clearDisplay();
+    oledDisplay->clearDisplay();
 
     TwoDRObject topBorder = TwoDRObject(OLED_WIDTH, 1, oledDisplay);
     TwoDRObject bottomBorder = TwoDRObject(OLED_WIDTH, 1, oledDisplay);
@@ -32,7 +34,7 @@ void setup() {
     TwoDRObject pixelBall = TwoDRObject(5, 5, oledDisplay);
     pixelBall.draw({OLED_WIDTH / 2, OLED_HEIGHT / 2}, InnerPosition::C);
 
-    oledDisplay.display();
+    oledDisplay->display();
 
     bool isDiagonalRandomTime = false;
 
@@ -47,7 +49,7 @@ void setup() {
 
         while (!pixelBall.isMoveCollision(topBorder, currentDirection) && !pixelBall.isMoveCollision(bottomBorder, currentDirection) && !pixelBall.isMoveCollision(leftBorder, currentDirection) && !pixelBall.isMoveCollision(rightBorder, currentDirection)) {
             pixelBall.move(currentDirection);
-            oledDisplay.display();
+            oledDisplay->display();
             delayMicroseconds(500);
         }
 

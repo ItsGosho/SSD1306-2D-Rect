@@ -1,138 +1,160 @@
-#ifndef SSD1306_2D_RECT_TWODROBJECT_H
-#define SSD1306_2D_RECT_TWODROBJECT_H
+#ifndef _SSD1306_2D_RECT_TWODROBJECT_H_
+#define _SSD1306_2D_RECT_TWODROBJECT_H_
 
 #include "Arduino.h"
 #include <Adafruit_SSD1306.h>
 
-struct Point {
-    uint8_t x;
-    uint8_t y;
-};
+namespace itsgosho {
 
-struct InnerPoint {
-    Point topLeft;
-    Point topRight;
-    Point bottomLeft;
-    Point bottomRight;
-};
+    struct Point {
+        uint8_t x;
+        uint8_t y;
+    };
 
-enum Direction {
-    UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, LEFT_UP = 4, LEFT_DOWN = 5, RIGHT_UP = 6, RIGHT_DOWN = 7
-};
+    struct InnerPoint {
+        Point topLeft;
+        Point topRight;
+        Point bottomLeft;
+        Point bottomRight;
+    };
 
-enum InnerPosition {
-    TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
-};
+    enum Direction {
+        UP = 0, DOWN = 1, LEFT = 2, RIGHT = 3, LEFT_UP = 4, LEFT_DOWN = 5, RIGHT_UP = 6, RIGHT_DOWN = 7
+    };
 
-class TwoDRObject {
+    enum InnerPosition {
+        TL = 0, TC = 1, TR = 2, RC = 3, C = 4, LC = 5, BL = 6, BC = 7, OP_BR = 8
+    };
 
-public:
+    template<size_t size>
+    Direction getRandomDirection(const Direction (& directions)[size]) {
+        return directions[random(0, size)];
+    }
 
-    TwoDRObject(Adafruit_SSD1306& ssd1306);
+    class TwoDRObject {
 
-    /*
-     * @param width can be only odd number. 1, 3, 5, 7 ...
-     * @param height can be only odd number. 1, 3, 5, 7 ...
-     * If @param width or @param height are incorrectly passed such as 2, 4, 5, 8 ..., then
-     * @param width will be +1 and @param height will be +1 to comply with the rule above.
-     * */
-    TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306& ssd1306);
+    public:
 
-    void draw(const Point& point, const InnerPosition& relative);
+        TwoDRObject();
 
-    void redraw();
+        /*
+         * @param width can be only odd number. 1, 3, 5, 7 ...
+         * @param height can be only odd number. 1, 3, 5, 7 ...
+         * If @param width or @param height are incorrectly passed such as 2, 4, 5, 8 ..., then
+         * @param width will be +1 and @param height will be +1 to comply with the rule above.
+         * */
+        TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_SSD1306* ssd1306);
 
-    void move(const Direction& direction);
+        void draw(const Point& point, const InnerPosition& relative);
 
-    void moveLeft();
+        /**
+         * By default, the position of the object relative to the point will be C (Center)
+         */
+        void draw(const Point& pont);
 
-    void moveRight();
+        void redraw();
 
-    void moveDown();
+        void move(const Direction& direction);
 
-    void moveUp();
+        void moveLeft();
 
-    void moveLeftUp();
+        void moveRight();
 
-    void moveLeftDown();
+        void moveDown();
 
-    void moveRightUp();
+        void moveUp();
 
-    void moveRightDown();
+        void moveLeftUp();
 
-    bool checkCollision(const TwoDRObject& secondObject);
+        void moveLeftDown();
 
-    bool isMoveCollision(const TwoDRObject& secondObject, const Direction& direction);
+        void moveRightUp();
 
-    bool isRightMoveCollision(const TwoDRObject& secondObject) const;
+        void moveRightDown();
 
-    bool isLeftMoveCollision(const TwoDRObject& secondObject) const;
+        bool checkCollision(const TwoDRObject& secondObject);
 
-    bool isUpMoveCollision(const TwoDRObject& secondObject) const;
+        bool isMoveCollision(const TwoDRObject& secondObject, const Direction& direction);
 
-    bool isDownMoveCollision(const TwoDRObject& secondObject) const;
+        bool isRightMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isLeftUpMoveCollision(const TwoDRObject& secondObject) const;
+        bool isLeftMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isLeftDownMoveCollision(const TwoDRObject& secondObject) const;
+        bool isUpMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isRightUpMoveCollision(const TwoDRObject& secondObject) const;
+        bool isDownMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isRightDownMoveCollision(const TwoDRObject& secondObject) const;
+        bool isLeftUpMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isFront(const TwoDRObject& object);
+        bool isLeftDownMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isAbove(const TwoDRObject& object);
+        bool isRightUpMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isBehind(const TwoDRObject& object);
+        bool isRightDownMoveCollision(const TwoDRObject& secondObject) const;
 
-    bool isBelow(const TwoDRObject& object);
+        bool isFront(const TwoDRObject& object);
 
-    void setWidth(const uint8_t& width);
+        bool isAbove(const TwoDRObject& object);
 
-    void setHeight(const uint8_t& height);
+        bool isBehind(const TwoDRObject& object);
 
-private:
-    uint8_t width;
-    uint8_t height;
-    Adafruit_SSD1306& ssd1306;
-    InnerPoint innerPoint;
+        bool isBelow(const TwoDRObject& object);
 
-    bool isDraw;
+        void setWidth(const uint8_t& width);
 
-    Point calculateDrawPointTL(const Point& point) const;
+        void setHeight(const uint8_t& height);
 
-    Point calculateDrawPointBL(const Point& point) const;
+        uint8_t getWidth() const;
 
-    Point calculateDrawPointTR(const Point& point) const;
+        uint8_t getHeight() const;
 
-    Point calculateDrawPointBR(const Point& point) const;
+        InnerPoint getInnerPoint() const;
 
-    Point calculateDrawPointCT(const Point& point) const;
+        /**
+         * Will clear the given object from the display.
+         * Note that you can redraw() it.
+         */
+        void clear();
 
-    Point calculateDrawPointCL(const Point& point) const;
+    private:
+        uint8_t width;
+        uint8_t height;
+        Adafruit_SSD1306* ssd1306;
+        InnerPoint innerPoint;
 
-    Point calculateDrawPointCB(const Point& point) const;
+        Point calculateDrawPointTL(const Point& point) const;
 
-    Point calculateDrawPointCR(const Point& point) const;
+        Point calculateDrawPointBL(const Point& point) const;
 
-    Point calculateDrawPointC(const Point& point) const;
+        Point calculateDrawPointTR(const Point& point) const;
 
-    /**
-     * Get where the top left corner of the object is if given part of it is at given position.
-     */
-    Point getTopLeft(const Point& point, const InnerPosition& relative) const;
+        Point calculateDrawPointBR(const Point& point) const;
 
-    void drawLine(const Point& from, const Direction& direction, const uint8_t& length, const uint16_t& color);
+        Point calculateDrawPointCT(const Point& point) const;
 
-    void drawLineUp(const Point& from, const uint8_t& length, const uint16_t& color);
+        Point calculateDrawPointCL(const Point& point) const;
 
-    void drawLineDown(const Point& from, const uint8_t& length, const uint16_t& color);
+        Point calculateDrawPointCB(const Point& point) const;
 
-    void drawLineLeft(const Point& from, const uint8_t& length, const uint16_t& color);
+        Point calculateDrawPointCR(const Point& point) const;
 
-    void drawLineRight(const Point& from, const uint8_t& length, const uint16_t& color);
-};
+        Point calculateDrawPointC(const Point& point) const;
 
+        /**
+         * Get where the top left corner of the object is if given part of it is at given position.
+         */
+        Point getTopLeft(const Point& point, const InnerPosition& relative) const;
 
-#endif //SSD1306_2D_RECT_TWODROBJECT_H
+        void drawLine(const Point& from, const Direction& direction, const uint8_t& length, const uint16_t& color);
+
+        void drawLineUp(const Point& from, const uint8_t& length, const uint16_t& color);
+
+        void drawLineDown(const Point& from, const uint8_t& length, const uint16_t& color);
+
+        void drawLineLeft(const Point& from, const uint8_t& length, const uint16_t& color);
+
+        void drawLineRight(const Point& from, const uint8_t& length, const uint16_t& color);
+    };
+}
+
+#endif
