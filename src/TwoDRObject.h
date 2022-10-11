@@ -114,27 +114,13 @@ namespace itsgosho {
          * Will clear the given object from the display.
          * Note that you can redraw() it.
          */
-        void clear() {
-
-            if (!this->isDraw)
-                return;
-
-            for (uint8_t y = this->innerPoint.topLeft.y; y < (this->innerPoint.topLeft.y + this->height); ++y) {
-                for (uint8_t x = this->innerPoint.topLeft.x; x < (this->innerPoint.topLeft.x + this->width); ++x) {
-                    this->ssd1306->drawPixel(x, y, BLACK);
-                }
-            }
-
-            this->isDraw = false;
-        }
+        void clear();
 
     private:
         uint8_t width;
         uint8_t height;
         Adafruit_SSD1306* ssd1306;
         InnerPoint innerPoint;
-
-        bool isDraw;
 
         Point calculateDrawPointTL(const Point& point) const;
 

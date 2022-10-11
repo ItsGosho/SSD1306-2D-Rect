@@ -9,14 +9,9 @@ TwoDRObject::TwoDRObject(const uint8_t& width, const uint8_t& height, Adafruit_S
     this->setWidth(width);
     this->setHeight(height);
     this->ssd1306 = ssd1306;
-    this->isDraw = false;
 }
 
 void TwoDRObject::draw(const Point& point, const InnerPosition& relative) {
-
-    if (this->isDraw)
-        return;
-
     Point topLeft = this->getTopLeft(point, relative);
 
     for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
@@ -38,7 +33,6 @@ void TwoDRObject::draw(const Point& point, const InnerPosition& relative) {
     Point topRight{topRightX, topRightY};
 
     this->innerPoint = InnerPoint{topLeft, topRight, bottomLeft, bottomRight};
-    this->isDraw = true;
 }
 
 void TwoDRObject::draw(const Point& pont) {
@@ -46,10 +40,6 @@ void TwoDRObject::draw(const Point& pont) {
 }
 
 void TwoDRObject::redraw() {
-
-    if (this->isDraw)
-        return;
-
     Point topLeft = this->innerPoint.topLeft;
 
     for (uint8_t y = topLeft.y; y < (topLeft.y + this->height); ++y) {
@@ -60,9 +50,6 @@ void TwoDRObject::redraw() {
 }
 
 void TwoDRObject::move(const Direction& direction) {
-
-    if (!this->isDraw)
-        return;
 
     switch (direction) {
         case Direction::UP:
@@ -103,10 +90,6 @@ void TwoDRObject::move(const Direction& direction) {
 }
 
 void TwoDRObject::moveLeft() {
-
-    if (!this->isDraw)
-        return;
-
     Point createLinePoint{(uint8_t) (this->innerPoint.topLeft.x - 1), this->innerPoint.topLeft.y};
     this->drawLineDown(createLinePoint, this->height, WHITE);
 
@@ -120,10 +103,6 @@ void TwoDRObject::moveLeft() {
 }
 
 void TwoDRObject::moveRight() {
-
-    if (!this->isDraw)
-        return;
-
     Point createLinePoint{(uint8_t) (this->innerPoint.topRight.x + 1), this->innerPoint.topRight.y};
     this->drawLineDown(createLinePoint, this->height, WHITE);
 
@@ -137,10 +116,6 @@ void TwoDRObject::moveRight() {
 }
 
 void TwoDRObject::moveDown() {
-
-    if (!this->isDraw)
-        return;
-
     Point createLinePoint{this->innerPoint.bottomLeft.x, (uint8_t) (this->innerPoint.bottomLeft.y + 1)};
     this->drawLineRight(createLinePoint, this->width, WHITE);
 
@@ -154,10 +129,6 @@ void TwoDRObject::moveDown() {
 }
 
 void TwoDRObject::moveUp() {
-
-    if (!this->isDraw)
-        return;
-
     Point createLinePoint{this->innerPoint.topLeft.x, (uint8_t) (this->innerPoint.topLeft.y - 1)};
     this->drawLineRight(createLinePoint, this->width, WHITE);
 
@@ -171,37 +142,21 @@ void TwoDRObject::moveUp() {
 }
 
 void TwoDRObject::moveLeftUp() {
-
-    if (!this->isDraw)
-        return;
-
     this->moveLeft();
     this->moveUp();
 }
 
 void TwoDRObject::moveLeftDown() {
-
-    if (!this->isDraw)
-        return;
-
     this->moveLeft();
     this->moveDown();
 }
 
 void TwoDRObject::moveRightUp() {
-
-    if (!this->isDraw)
-        return;
-
     this->moveRight();
     this->moveUp();
 }
 
 void TwoDRObject::moveRightDown() {
-
-    if (!this->isDraw)
-        return;
-
     this->moveRight();
     this->moveDown();
 }
@@ -214,10 +169,6 @@ bool TwoDRObject::checkCollision(const TwoDRObject& secondObject) {
 }
 
 bool TwoDRObject::isMoveCollision(const TwoDRObject& secondObject, const Direction& direction) {
-
-    if (!this->isDraw)
-        return false;
-
     switch (direction) {
         case Direction::UP:
             return this->isUpMoveCollision(secondObject);
@@ -346,6 +297,16 @@ uint8_t TwoDRObject::getHeight() const {
 
 InnerPoint TwoDRObject::getInnerPoint() const {
     return this->innerPoint;
+}
+
+void TwoDRObject::clear() {
+    {
+        for (uint8_t y = this->innerPoint.topLeft.y; y < (this->innerPoint.topLeft.y + this->height); ++y) {
+            for (uint8_t x = this->innerPoint.topLeft.x; x < (this->innerPoint.topLeft.x + this->width); ++x) {
+                this->ssd1306->drawPixel(x, y, BLACK);
+            }
+        }
+    }
 }
 
 Point TwoDRObject::calculateDrawPointTL(const Point& point) const {
